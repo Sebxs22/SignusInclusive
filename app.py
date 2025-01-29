@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import os
 import threading
@@ -92,10 +92,10 @@ def evaluate():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Ruta de inicio
+# Ruta de inicio - Aquí cargamos el archivo HTML
 @app.route('/')
 def index():
-    return jsonify({"message": "API de Flask funcionando correctamente."})
+    return render_template('index.html')  # Renderiza el archivo index.html desde la carpeta templates
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)  # Hacer el servidor accesible en todas las interfaces
