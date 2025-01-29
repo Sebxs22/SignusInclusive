@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGNUS - Descargar App</title>
+  <!-- Enlace al archivo CSS estático -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <!-- Encabezado -->
+  <header>
+    <div class="container">
+      <h1>SIGNUS</h1>
+      <p>Descarga nuestra aplicación</p>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main>
+    <div class="container">
+      <div class="qr-container">
+        <!-- Código QR generado dinámicamente -->
+        <center><img id="qr-code" src="" alt="Código QR para descargar la app"></center>
+        <p class="download-text">Escanea el código QR para descargar la app</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Pie de página -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 SIGNUS. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Script para generar el QR -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    // URL de descarga de tu app (cambia esto por tu enlace)
+    const downloadUrl = "https://tuenlace.com/app-descarga";
+
+    // Generar el código QR
+    const qrCode = new QRCode(document.getElementById("qr-code"), {
+      text: downloadUrl,
+      width: 250,
+      height: 250,
+    });
+
+    // Opcional: Redirigir al enlace de descarga si se hace clic en el QR
+    document.getElementById("qr-code").addEventListener("click", () => {
+      window.location.href = downloadUrl;
+    });
+  </script>
+</body>
+</html>
