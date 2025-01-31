@@ -1,56 +1,267 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIGNUS - Descargar App</title>
-  <!-- Enlace al archivo CSS estático -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGNUS - Revolución en la Comunicación</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary: #6366F1;
+            --secondary: #4F46E5;
+            --accent: #818CF8;
+            --text: #1F2937;
+            --background: #F3F4F6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(120deg, #6366F1, #4F46E5);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            color: white;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .hero-visual {
+            display: flex;
+            gap: 2rem;
+            justify-content: flex-end;
+            perspective: 1000px;
+        }
+
+        .app-preview {
+            display: flex;
+            gap: 2rem;
+            transform: rotateY(-15deg) rotateX(5deg);
+            transform-style: preserve-3d;
+        }
+
+        .app-preview img {
+            height: 600px;
+            border-radius: 2rem;
+            box-shadow: 
+                0 50px 100px rgba(0,0,0,0.25),
+                0 10px 20px rgba(0,0,0,0.15);
+            transition: transform 0.5s ease;
+        }
+
+        .app-preview img:hover {
+            transform: translateZ(20px);
+        }
+
+        .download-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem;
+            border-radius: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: rotateY(15deg) rotateX(5deg);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .download-section:hover {
+            transform: rotateY(0deg) rotateX(0deg);
+        }
+
+        .download-section h2 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #qr-code {
+            background: white;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin: 0 auto 1.5rem;
+            width: fit-content;
+            transition: transform 0.3s ease;
+        }
+
+        #qr-code:hover {
+            transform: scale(1.05);
+        }
+
+        .features {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--background);
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-visual {
+                justify-content: center;
+            }
+
+            .hero-text h1 {
+                font-size: 3rem;
+            }
+
+            .app-preview {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-visual {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .app-preview {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .app-preview img {
+                height: auto;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .download-section {
+                width: 100%;
+                max-width: 300px;
+                transform: none;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Encabezado -->
-  <header>
-    <div class="container">
-      <h1>SIGNUS</h1>
-      <p>Descarga nuestra aplicación</p>
-    </div>
-  </header>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>SIGNUS</h1>
+                    <p>Revoluciona tu forma de comunicar. Aprende lenguaje de señas de manera intuitiva y efectiva con nuestra aplicación innovadora.</p>
+                </div>
+                
+                <div class="hero-visual">
+                    <div class="app-preview">
+                        <img src="{{ url_for('static', filename='images/app_home.png') }}" alt="Vista previa de la app - Inicio">
+                        <img src="{{ url_for('static', filename='images/app_learn.png') }}" alt="Vista previa de la app - Aprender">
+                    </div>
+                    <div class="download-section">
+                        <h2>Descarga Ahora</h2>
+                        <div id="qr-code"></div>
+                        <p style="color: white;">Escanea el código QR para descargar la aplicación</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Contenido principal -->
-  <main>
-    <div class="container">
-      <div class="qr-container">
-        <!-- Código QR generado dinámicamente -->
-        <center><img id="qr-code" src="" alt="Código QR para descargar la app"></center>
-        <p class="download-text">Escanea el código QR para descargar la app</p>
-      </div>
-    </div>
-  </main>
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Aprendizaje Intuitivo</h3>
+                    <p>Aprende a tu propio ritmo con lecciones interactivas y prácticas en tiempo real.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Comunidad Activa</h3>
+                    <p>Únete a una comunidad vibrante de personas comprometidas con el lenguaje de señas.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Práctica en Tiempo Real</h3>
+                    <p>Mejora tus habilidades con ejercicios prácticos y retroalimentación instantánea.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Pie de página -->
-  <footer>
-    <div class="container">
-      <p>&copy; 2025 SIGNUS. Todos los derechos reservados.</p>
-    </div>
-  </footer>
-
-  <!-- Script para generar el QR -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script>
-    // URL de descarga de tu app (cambia esto por tu enlace)
-    const downloadUrl = "https://tuenlace.com/app-descarga";
-
-    // Generar el código QR
-    const qrCode = new QRCode(document.getElementById("qr-code"), {
-      text: downloadUrl,
-      width: 250,
-      height: 250,
-    });
-
-    // Opcional: Redirigir al enlace de descarga si se hace clic en el QR
-    document.getElementById("qr-code").addEventListener("click", () => {
-      window.location.href = downloadUrl;
-    });
-  </script>
+    <script>
+        const downloadUrl = "{{ url_for('static', filename='apps/Signus.apk') }}";
+        new QRCode(document.getElementById("qr-code"), {
+            text: downloadUrl,
+            width: 180,
+            height: 180,
+            colorDark: "#4F46E5",
+            colorLight: "#ffffff"
+        });
+        document.getElementById("qr-code").addEventListener("click", () => {
+            window.location.href = downloadUrl;
+        });
+    </script>
 </body>
 </html>
